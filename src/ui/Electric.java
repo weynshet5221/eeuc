@@ -5,9 +5,9 @@
 
 package ui;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+//import java.awt.*;
+//import java.awt.event.*;
+//import java.util.ArrayList;
 
 /**
  *
@@ -20,7 +20,22 @@ public class Electric extends javax.swing.JFrame {
      */
     public Electric() {
         initComponents();
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2ActionPerformed(evt);
     }
+});
+    }
+    public static void main(String[] args) {
+    // Run the GUI on the Event Dispatch Thread (EDT)
+    SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            Electric frame = new Electric();  // Create an instance of the Electric class
+            frame.setVisible(true);          // Make the frame visible
+        }
+    });
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -263,6 +278,37 @@ public class Electric extends javax.swing.JFrame {
 
  
     }//GEN-LAST:event_jButton1ActionPerformed
+private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    // Get the table model
+    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    int rowCount = model.getRowCount();
+
+    if (rowCount == 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No data available for calculation!", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    double totalConsumption = 0.0;
+    
+    // Sum up total consumption from the table
+    for (int i = 0; i < rowCount; i++) {
+        totalConsumption += Double.parseDouble(model.getValueAt(i, 4).toString());
+    }
+
+    // Set the electricity rate per kWh (Adjust as per actual rate)
+    double electricityRate = 2.5;  // Example: 2.5 ETB per kWh
+    double serviceCharge = 50.0;   // Fixed service charge
+
+    // Calculate amount and total billable
+    double amountETB = totalConsumption * electricityRate;
+    double totalBillable = amountETB + serviceCharge;
+
+    // Display results in respective text fields
+    jTextField5.setText(String.format("%.2f", totalConsumption)); // Total Consumption (kWh)
+    jTextField6.setText(String.format("%.2f", amountETB));       // Amount (ETB)
+    jTextField7.setText(String.format("%.2f", serviceCharge));   // Service Charge (ETB)
+    jTextField8.setText(String.format("%.2f", totalBillable));   // Total Billable Amount (ETB)
+}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
